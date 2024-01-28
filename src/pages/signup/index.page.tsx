@@ -14,12 +14,9 @@ import { FinishStep } from './components/Finish';
 import { SignUpPageStepsType } from './interfaces';
 
 const SizeMapper: Record<SignUpPageStepsType, string> = {
-  FORM: 'fit-content',
+  FORM: 'calc(100% - 2rem)',
   FINISH: '23.5rem',
 };
-
-export const formatDateInput = (value?: string | number | Date) =>
-  value ? new Date(new Date(value || 0).getTime() + 600000)?.toISOString().split('T')[0] : '';
 
 const SignUp: React.FC = () => {
   const [step, setStep] = useState<SignUpPageStepsType>('FORM');
@@ -92,26 +89,29 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <Flex
-      direction="column"
-      bgColor="white"
-      height={{ base: `100%`, sm: "fit-content" }}
-      maxW={{ base: `100%`, sm: "420px" }}
-      margin={{ base: `2rem`, sm: "auto" }}
-      borderRadius="12px"
-      align="center"
-      padding="24px"
-      transition="all 0.2s"
-      bg="rgba(0, 0, 0, 0.25)"
-      boxShadow="0 4px 30px rgba(0, 0, 0, 0.1)"
-      border="1px"
-      borderColor="gray300"
-      backdropFilter="blur(5px)"
-      h={SizeMapper[step]}
-    >
-      <AppLogo />
+    <Flex my="2rem" overflow="hidden">
+      <Flex
+        direction="column"
+        bgColor="white"
+        height={{ base: `100%`, sm: 'fit-content' }}
+        maxW={{ base: `100%`, sm: '420px' }}
+        margin="auto"
+        overflow="hidden"
+        borderRadius="12px"
+        align="center"
+        padding="24px"
+        transition="all 0.2s"
+        bg="rgba(0, 0, 0, 0.25)"
+        boxShadow="0 4px 30px rgba(0, 0, 0, 0.1)"
+        border="1px"
+        borderColor="gray300"
+        backdropFilter="blur(5px)"
+        h={SizeMapper[step]}
+      >
+        <AppLogo />
 
-      {PageStepElement[step]}
+        {PageStepElement[step]}
+      </Flex>
     </Flex>
   );
 };

@@ -36,11 +36,7 @@ const Login: React.FC = () => {
 
       const { access_token } = googleAccessToken
         ? await googleLogin(googleAccessToken)
-        : await login({
-          identifier: data.identifier,
-          password: data.password,
-        });
-
+        : await login({ identifier: data.identifier, password: data.password });
 
       cookieManager.setToken(access_token, 7);
       api.defaults.headers.authorization = `Bearer ${access_token}`;
@@ -94,7 +90,7 @@ const Login: React.FC = () => {
             onInputChange={(v) => onInputChange('identifier', v)}
             leftElement={<FiUser style={{ color: 'white' }} />}
             color="white"
-            placeholder="Nome de Usuário"
+            placeholder="E-mail"
             fontSize="1.085rem"
             _placeholder={{ color: `white` }}
           />
@@ -104,7 +100,7 @@ const Login: React.FC = () => {
             value={data?.password}
             onInputChange={(v) => onInputChange('password', v)}
             color="white"
-            placeholder="Sua senha"
+            placeholder="Senha"
             fontSize="1.085rem"
             _placeholder={{ color: `white` }}
           />

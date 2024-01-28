@@ -4,7 +4,6 @@ import { PasswordInput } from '@/components/Inputs/Password';
 import { TextInput } from '@/components/Inputs/Text';
 import { Flex, Text } from '@chakra-ui/react';
 import { MdMailOutline } from 'react-icons/md';
-import { formatDateInput } from '../../index.page';
 import { InputHandlerErrorType } from '@/_base/hooks/InputHandler/interfaces';
 import IRegisterUser from '@/_base/interfaces/user/IRegisterUser';
 import { Dispatch, SetStateAction } from 'react';
@@ -33,7 +32,7 @@ export const FormStep: React.FC<IProps> = ({
   submitLoading,
 }) => {
   return (
-    <Flex direction="column" h="100%" justify="space-between" align="center" gap="1.25rem" overflow="hidden">
+    <Flex direction="column" h="100%" justify="space-between" align="center" gap="1.25rem" overflow="auto">
       <Flex direction="column" gap="8px" marginTop="2rem">
         <Text fontWeight="600" fontSize="20px" color="white">
           Informe os seus dados
@@ -119,3 +118,6 @@ export const FormStep: React.FC<IProps> = ({
     </Flex>
   );
 };
+
+const formatDateInput = (value?: string | number | Date) =>
+  value ? new Date(new Date(value || 0).getTime() + 600000)?.toISOString().split('T')[0] : '';

@@ -1,4 +1,3 @@
-import { storesMock } from '@/_base/interfaces/store';
 import { AppCarousel } from '@/components/Carousel';
 import { Flex, Text } from '@chakra-ui/react';
 import { StoreLogo } from '@/components/Logo';
@@ -22,7 +21,7 @@ export const LastViewed: React.FC<IProps> = () => {
         Ver novamente
       </Text>
       <AppCarousel className="carousel" itemsByDevice={{ mobile: 3 }} infinite={false}>
-        {storesMock.map((store) => (
+        {([] as any).map((store) => (
           <Flex
             key={store.id}
             direction="column"

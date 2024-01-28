@@ -8,6 +8,7 @@ import { EditableTextInput } from '@/components/Inputs/EditableText';
 import { useAsyncCallback, useAuth } from '@/_base/hooks';
 import { updateProfile } from '@/_base/services/user';
 import { AppLogo } from '@/components/Logo';
+import { validateSession } from '@/_base/services/auth';
 
 interface IProps {
   user: IUser;
@@ -25,7 +26,7 @@ const Profile: React.FC<IProps> = ({ user }) => {
       address: profile.address,
       birthdate: profile.birthdate,
       email: profile.email,
-      phone: profile.phone
+      phone: profile.phone,
     });
 
     setProfile((e) => ({ ...e, ...updatedProfile }));
@@ -69,10 +70,10 @@ const Profile: React.FC<IProps> = ({ user }) => {
           </Flex>
         </Flex>
 
-        <Text mb="-0.875rem" pt="1rem" color="gray500">
+        <Text mb="-0.275rem" pt="1rem" color="gray400" fontSize="14px">
           Endereço
         </Text>
-        <Flex direction="column" gap=".5rem" p=".5rem" border="1px" borderRadius="md" borderColor="gray200">
+        <Flex direction="column" gap=".5rem" p=".5rem" borderRadius="md">
           <EditableTextInput label="CEP" />
           <EditableTextInput label="Cidade" />
           <EditableTextInput label="Estado" />
@@ -94,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   try {
     cookieManager.updateToken(req);
 
-    // const user = await validateSession();
+    const user = await validateSession();
 
     return { props: { selectedPage, pageTitle: 'Rango - Perfil', showBackButton: false } };
   } catch (err: any) {

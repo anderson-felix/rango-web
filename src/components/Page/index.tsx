@@ -45,7 +45,7 @@ export const PageWrapper: React.FC<PropsWithChildren<IPageProps>> = ({
           {showLastViewed && <LastViewed />}
           {showUserInfo && <UserInfo />}
           <Flex flex="1" gap="32px" overflow="hidden">
-            <Flex flex="1" height="100%" w="100%" overflow="hidden" direction="column">
+            <Flex flex="1" height="100%" w="100%" overflow="hidden" direction="column" padding={{ base: '1rem', md: undefined }}>
               {showBackButton && (
                 <Flex cursor="pointer" fontWeight="600" color="primary700" onClick={() => router.back()} pb="0.5rem" w="fit-content">
                   <FiChevronLeft fontSize="20px" style={{ marginTop: '2px' }} />
