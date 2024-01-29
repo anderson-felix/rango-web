@@ -157,7 +157,7 @@ const Orders: React.FC<IProps> = ({ orders: _orders }) => {
             </Flex>
           </Flex>
         ) : (
-          <Flex color="primary300" direction="column" gap="0.25rem" align="center">
+          <Flex color="primary300" direction="column" gap="0.25rem" mt="1.35rem" align="center">
             <IoCartOutline fontSize="2rem" />
             <Text color="gray500">Vazio</Text>
           </Flex>
@@ -171,18 +171,17 @@ const Orders: React.FC<IProps> = ({ orders: _orders }) => {
           <CardOrder key={order.id} order={order} onUpdateCart={setCart} />
         ))}
         {!orders.length && !cart?.items?.length && (
-          <Flex direction="column" align="center" gap="1rem" mt="2rem">
-            <Text fontSize="18px" color="text">
-              Você ainda não fez nenhum pedido
-            </Text>{' '}
-            <Img src="/icons/empty-bowl.svg" h="4rem" />
+          <Flex direction="column" align="center" gap="0.25rem">
+            <Img src="/icons/empty-bowl.svg" h="2.25rem" />
+            <Text color="gray500">Você ainda não fez nenhum pedido</Text>
             <GenericButton
               label="Ver lojas"
               btntype="primary"
               bg="tranparent"
               color="primary300"
               border="1px"
-              mt="4rem"
+              size="sm"
+              mt="2rem"
               onClick={() => router.push(`/home`)}
             />
           </Flex>

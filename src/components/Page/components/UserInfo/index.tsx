@@ -32,7 +32,7 @@ export const UserInfo: React.FC<IProps> = ({ user }) => {
       <Flex align="center" gap="0.25rem" cursor="pointer" opacity="0.8" onClick={() => router.push('/profile')}>
         {checkAddress(user?.address) ? (
           <Text fontWeight="500" fontSize="14px">
-            Rua {formatAddress(user?.address as any)}
+            {formatAddress(user?.address as any)}
           </Text>
         ) : (
           <>

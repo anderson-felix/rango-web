@@ -35,6 +35,8 @@ const Search: React.FC<IProps> = () => {
 
         isMatched = !!store.display_name.match(targetText);
         isMatched = !!store.segments.find((segment) => segment.toLocaleLowerCase().match(targetText.toLocaleLowerCase()));
+        isMatched = !!store.menu?.find((item) => item.name.toLocaleLowerCase().match(targetText.toLocaleLowerCase()));
+        isMatched = !!store.menu?.find((item) => item.description.toLocaleLowerCase().match(targetText.toLocaleLowerCase()));
 
         return isMatched;
       });
