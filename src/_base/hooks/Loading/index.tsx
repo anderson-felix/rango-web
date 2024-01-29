@@ -36,39 +36,26 @@ export const LoadingProvider: React.FC<PropsWithChildren<ILoadingProviderProps>>
         opacity={loadingConfig.isLoading ? '1' : '0'}
         pointerEvents={loadingConfig.isLoading ? 'auto' : 'none'}
       >
-        {loadingConfig.type !== 'spinner' && (
-          <>
-            <Image src="/patterns/line-pattern.svg" zIndex="-1" h={{ base: '0', lg: '445px' }} position="absolute" left="0" top="11.5rem" />
-            <Image src="/patterns/line-pattern.svg" zIndex="-1" h={{ base: '0', lg: '445px' }} position="absolute" bottom="0" right="-5rem" />
-          </>
-        )}
-
-        {loadingConfig.type === 'fullscreen' && (
-          <Flex position="absolute" top="50%" left="50%" transform="translate(-50%,-50%)">
-            <Image src="/loading/rocket-loading.gif" />
-          </Flex>
-        )}
-
         {loadingConfig.type === 'spinner' && (
           <Slide direction="bottom" in={loadingConfig.isLoading} style={{ zIndex: 10, justifyContent: 'flex-end', display: 'flex' }}>
             <Flex>
               <Image
-                src="/loading/rocket-picode.gif"
-                h="12rem"
-                m="0 1rem -1.5rem 0"
-                // css={`
-                //   animation: letterRotation 1s linear infinite;
+                src="/logo/rango-symbol-dark.svg"
+                h="3rem"
+                m="0 1rem 4.5rem 0"
+                css={`
+                  animation: letterRotation 1s linear infinite;
 
-                //   @keyframes letterRotation {
-                //     from {
-                //       transform: rotateZ(0deg);
-                //     }
+                  @keyframes letterRotation {
+                    from {
+                      transform: rotateZ(0deg);
+                    }
 
-                //     to {
-                //       transform: rotateZ(360deg);
-                //     }
-                //   }
-                // `}
+                    to {
+                      transform: rotateZ(360deg);
+                    }
+                  }
+                `}
               />
             </Flex>
           </Slide>

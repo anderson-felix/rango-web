@@ -15,11 +15,14 @@ export const CardStore: React.FC<ICardStoreProps> = ({ store }) => {
       maxW="10rem"
       maxH="11rem"
       borderRadius="lg"
-      bg="white"
+      bg="surface"
       position="relative"
       overflow="hidden"
       boxShadow="md"
       onClick={() => router.push(`/store/${store.id}`)}
+      cursor="pointer"
+      transition="all 0.15s"
+      _hover={{ boxShadow: `lg` }}
     >
       <Flex h="6rem" bgImage={store.profile_pic} bgPosition="center" bgSize="contain" w="100%" />
       <StoreLogo src={store.logo} position="absolute" border="2px" borderColor="gray400" left="1rem" top="50%" transform="translate(0, -50%)" />

@@ -7,6 +7,7 @@ import { MdMailOutline } from 'react-icons/md';
 import { InputHandlerErrorType } from '@/_base/hooks/InputHandler/interfaces';
 import IRegisterUser from '@/_base/interfaces/user/IRegisterUser';
 import { Dispatch, SetStateAction } from 'react';
+import { FiPhone } from 'react-icons/fi';
 
 interface IProps {
   isGoogleSignin: boolean;
@@ -74,7 +75,7 @@ export const FormStep: React.FC<IProps> = ({
           error={errors.phone}
           color="white"
           onInputChange={(value) => onInputChange('phone', value)}
-          leftElement={<MdMailOutline color="white" />}
+          leftElement={<FiPhone color="white" />}
         />
 
         <DateInput

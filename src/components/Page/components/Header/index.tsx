@@ -18,10 +18,10 @@ export const Header: React.FC<IProps> = ({ headerLabel }) => {
       w="100%"
       alignItems="center"
       justifyContent="space-between"
-      padding="0 0.5rem"
-      borderRadius="0 0 0.4rem 0.4rem"
+      padding={{ base: '0 0.5rem', md: '0 1rem' }}
+      borderRadius={{ base: '0 0 0.4rem 0.4rem', md: '0' }}
       borderColor="primary"
-      bg="externalContentBG"
+      bg={{ base: 'menuBG', md: 'externalContentBG' }}
       userSelect="none"
       boxShadow="md"
       position="relative"

@@ -24,6 +24,7 @@ export const cookieManager: ITokenManager = {
     return null;
   },
   setCookie: (name, value, expires = 1) => Cookies.set(btoa(name), btoa(value), { expires }),
+  removeCookie: (name) => Cookies.remove(btoa(name)),
 };
 
 type NextAppRequest = IncomingMessage & { cookies: Partial<{ [key: string]: string }> };
@@ -34,4 +35,5 @@ interface ITokenManager {
   updateToken: (req: NextAppRequest) => void;
   getCookie: <T = string>(name: string, parse?: boolean) => T | null;
   setCookie: (name: string, value: string, expires?: number) => void;
+  removeCookie: (name: string) => void;
 }

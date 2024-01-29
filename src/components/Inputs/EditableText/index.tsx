@@ -18,7 +18,7 @@ export const EditableTextInput: React.FC<IInputProps & EditableControlsType> = (
   ...rest
 }) => {
   return (
-    <Flex direction="column" color="gray600">
+    <Flex direction="column" color="text" bg="primaryBG">
       {!!label && (
         <Text color="gray700" fontSize="13.5px" fontWeight="500" pb="0.25rem">
           {label}
@@ -38,6 +38,7 @@ export const EditableTextInput: React.FC<IInputProps & EditableControlsType> = (
           value={value}
           border="none"
           padding="5px 10px"
+          bg="primaryBG"
           borderRadius="8px"
           variant="unstyled"
           fontSize="16px"

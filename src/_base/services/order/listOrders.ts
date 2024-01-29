@@ -1,7 +1,7 @@
 import { api } from '@/_base/classes/api';
-import { IStore } from '@/_base/interfaces/store';
+import { IOrder } from '@/_base/interfaces/order';
 
-export const listOrders = async (): Promise<IStore[]> => {
+export const listOrders = async (): Promise<IOrder[]> => {
   const { data } = await api.get(`/user/order/list`);
   return data;
 };

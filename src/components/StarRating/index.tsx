@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import { FaRegStar, FaStar } from 'react-icons/fa6';
 import { FaStarHalfAlt } from 'react-icons/fa';
 
-export const StarRating: React.FC<IStarRatingProps> = ({ onChange, rating }) => {
+export const StarRating: React.FC<IStarRatingProps> = ({ onChange, rating, ...rest }) => {
   const [stars, setStars] = useState<StarRatingType[]>([]);
 
   useEffect(() => {
@@ -12,8 +12,22 @@ export const StarRating: React.FC<IStarRatingProps> = ({ onChange, rating }) => 
   }, [rating]);
 
   return (
-    <Flex color="primary400">
-      {stars.map((star) => (star.fill === `full` ? <FaStar /> : star.fill === `half` ? <FaStarHalfAlt /> : <FaRegStar />))}
+    <Flex color="primary400" {...rest}>
+      {stars.map((star, i) =>
+        star.fill === `full` ? (
+          <Flex key={star.fill + i} onClick={() => onChange && onChange(i + 1)}>
+            <FaStar />
+          </Flex>
+        ) : star.fill === `half` ? (
+          <Flex key={star.fill + i} onClick={() => onChange && onChange(i + 1)}>
+            <FaStarHalfAlt />
+          </Flex>
+        ) : (
+          <Flex key={star.fill + i} onClick={() => onChange && onChange(i + 1)}>
+            <FaRegStar />
+          </Flex>
+        ),
+      )}
     </Flex>
   );
 };

@@ -21,13 +21,14 @@ export const FooterMenu: React.FC<INavbarProps> = ({ page }) => {
     <Flex
       w="100%"
       h="fit-content"
-      bg="externalContentBG"
+      bg={{ base: 'menuBG', md: 'externalContentBG' }}
       p="0.5rem"
       userSelect="none"
       borderRadius="8px 8px 0 0"
       borderTop="1px"
       borderColor="externalContentBorder"
       justify="center"
+      display={{ base: `flex`, md: `none` }}
     >
       <Flex w="100%" maxW="412px" justify="space-between">
         {menuItems.map((item) => (

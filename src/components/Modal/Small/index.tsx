@@ -18,6 +18,7 @@ export const SmallModal: React.FC<PropsWithChildren<IModalProps>> = ({
   title,
   onConfirm,
   onCancel,
+  onClose,
   children,
   okText,
   cancelText,
@@ -28,9 +29,17 @@ export const SmallModal: React.FC<PropsWithChildren<IModalProps>> = ({
   ...rest
 }) => {
   return (
-    <ChakraModal {...rest} isOpen={show} onClose={() => onCancel && onCancel()} scrollBehavior="inside">
+    <ChakraModal
+      {...rest}
+      isOpen={show}
+      onClose={() => {
+        if (onCancel) onCancel();
+        if (onClose) onClose();
+      }}
+      scrollBehavior="inside"
+    >
       <ModalOverlay {...overlay} />
-      <ModalContent w={!rest.size ? 'fit-content' : undefined} zIndex="9998">
+      <ModalContent w={!rest.size ? 'fit-content' : undefined} zIndex="9998" color="text">
         {typeof topIcon === 'string' ? (
           <Box m="1rem 0 0 1rem">
             <Image src={`/icons/${topIcon}.svg`} h="48px" />
@@ -41,7 +50,7 @@ export const SmallModal: React.FC<PropsWithChildren<IModalProps>> = ({
         <ModalHeader fontSize="1rem" p="0.5rem 1rem">
           {title}
         </ModalHeader>
-        {!!onCancel && <ModalCloseButton isDisabled={disableCancelButton} />}
+        {!!onClose && <ModalCloseButton isDisabled={disableCancelButton} />}
         <ModalBody>{children}</ModalBody>
 
         <ModalFooter p="1rem" justifyContent="center" gap="1rem">
@@ -55,17 +64,17 @@ export const SmallModal: React.FC<PropsWithChildren<IModalProps>> = ({
               isDisabled={disableCancelButton}
             />
           )}
-          <GenericButton
-            px="1.5rem"
-            border="none"
-            fontWeight="500"
-            fontSize="1rem"
-            label={okText || 'Confirmar'}
-            onClick={() => {
-              onConfirm();
-            }}
-            isDisabled={disableOkButton}
-          />
+          {!!onConfirm && (
+            <GenericButton
+              px="1.5rem"
+              border="none"
+              fontWeight="500"
+              fontSize="1rem"
+              label={okText || 'Confirmar'}
+              onClick={() => onConfirm && onConfirm()}
+              isDisabled={disableOkButton}
+            />
+          )}
         </ModalFooter>
       </ModalContent>
     </ChakraModal>

@@ -3,22 +3,37 @@ import { useState } from 'react';
 
 import { logError, cookieManager } from '@/_base/utils';
 import { Flex, Text, useColorMode } from '@chakra-ui/react';
-import { EMPTY_USER, IUser } from '@/_base/interfaces/user';
+import { IUser } from '@/_base/interfaces/user';
 import { EditableTextInput } from '@/components/Inputs/EditableText';
-import { useAsyncCallback, useAuth } from '@/_base/hooks';
+import { useAsyncCallback, useAsyncDebounce, useAuth, useCustomToast } from '@/_base/hooks';
 import { updateProfile } from '@/_base/services/user';
 import { AppLogo } from '@/components/Logo';
 import { validateSession } from '@/_base/services/auth';
+import axios from 'axios';
+
+interface ViaCepResponse {
+  cep: string;
+  logradouro: string;
+  complemento: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
+  ibge: string;
+  gia: string;
+  ddd: string;
+  siafi: string;
+}
 
 interface IProps {
   user: IUser;
 }
 
 const Profile: React.FC<IProps> = ({ user }) => {
-  const [profile, setProfile] = useState<IUser>(EMPTY_USER);
+  const [profile, setProfile] = useState<IUser>(user);
 
   const { setUser, user: authUser } = useAuth();
   const { setColorMode } = useColorMode();
+  const toast = useCustomToast();
 
   const handleUpdateProfile = useAsyncCallback(async () => {
     const updatedProfile = await updateProfile({
@@ -33,17 +48,63 @@ const Profile: React.FC<IProps> = ({ user }) => {
     setUser({ ...authUser, ...updatedProfile });
   }, []);
 
+  useAsyncDebounce(
+    async () => {
+      const zipcode = profile.address?.zip_code?.replace(/\D/g, '');
+
+      if (zipcode?.length === 8) {
+        try {
+          const { data } = await axios.get<ViaCepResponse>(`https://viacep.com.br/ws/${zipcode}/json/`);
+
+          setProfile((e) => ({
+            ...e,
+            address: {
+              address: data.logradouro,
+              number: ``,
+              complement: ``,
+              neighborhood: data.bairro,
+              city: data.localidade,
+              state: data.uf,
+              country: `Brasil`,
+              zip_code: zipcode,
+            },
+          }));
+        } catch {
+          toast({ status: `error`, description: `Cep não encontado` });
+        }
+      }
+    },
+    [profile.address?.zip_code],
+    500,
+  );
+
   return (
-    <Flex flex="1" direction="column" padding="1.5rem 1rem 1.5rem 1.5rem" overflow="hidden" gap="0.5rem">
+    <Flex
+      flex="1"
+      direction="column"
+      padding="1.5rem 1rem 1.5rem 1.5rem"
+      overflow="hidden"
+      gap="1rem"
+      w="100%"
+      color="text"
+      maxW={{ base: undefined, md: `70rem` }}
+      margin={{ base: undefined, md: '0 auto' }}
+    >
       <AppLogo type="symbol" size="lg" />
-      <Flex h="100%" direction="column" gap="1rem" overflow="hidden auto" pr="0.5rem">
+      <Flex h="100%" direction="column" gap="1rem" overflow="hidden auto" pr="0.5rem" color="text">
         <EditableTextInput
           onInputChange={(name) => setProfile((e) => ({ ...e, name }))}
           value={profile.name}
           onOk={handleUpdateProfile}
           onCancel={() => setProfile((e) => ({ ...e, name: user.name }))}
         />
-        <EditableTextInput placeholder="Seu e-mail" onInputChange={(email) => setProfile((e) => ({ ...e, email }))} value={profile.email || ''} />
+        <EditableTextInput
+          placeholder="Seu e-mail"
+          onInputChange={(email) => setProfile((e) => ({ ...e, email }))}
+          value={profile.email || ''}
+          onOk={handleUpdateProfile}
+          onCancel={() => setProfile((e) => ({ ...e, email: user.email }))}
+        />
 
         <Flex justify="space-around" px="1rem">
           <Flex
@@ -54,6 +115,9 @@ const Profile: React.FC<IProps> = ({ user }) => {
             color="#1A1740"
             bg="#FCFAFF"
             onClick={() => setColorMode(`light`)}
+            cursor="pointer"
+            transition="all 0.15s"
+            _hover={{ boxShadow: `md` }}
           >
             Tema claro
           </Flex>
@@ -65,6 +129,9 @@ const Profile: React.FC<IProps> = ({ user }) => {
             color="#fff"
             bg="externalContentBG"
             onClick={() => setColorMode(`dark`)}
+            cursor="pointer"
+            transition="all 0.15s"
+            _hover={{ boxShadow: `md` }}
           >
             Tema escuro
           </Flex>
@@ -74,13 +141,55 @@ const Profile: React.FC<IProps> = ({ user }) => {
           Endereço
         </Text>
         <Flex direction="column" gap=".5rem" p=".5rem" borderRadius="md">
-          <EditableTextInput label="CEP" />
-          <EditableTextInput label="Cidade" />
-          <EditableTextInput label="Estado" />
-          <EditableTextInput label="Bairro" />
-          <EditableTextInput label="Rua" />
-          <EditableTextInput label="Nº" />
-          <EditableTextInput label="Complemento" />
+          <EditableTextInput
+            label="CEP"
+            value={profile.address.zip_code || ``}
+            onOk={handleUpdateProfile}
+            onCancel={() => setProfile((e) => ({ ...e, address: { ...e.address, zip_code: user.address.zip_code || `` } }))}
+            onInputChange={(zip_code) => setProfile((e) => ({ ...e, address: { ...e.address, zip_code } }))}
+          />
+          <EditableTextInput
+            label="Cidade"
+            value={profile.address.city || ``}
+            onOk={handleUpdateProfile}
+            onCancel={() => setProfile((e) => ({ ...e, address: { ...e.address, city: user.address.city || `` } }))}
+            onInputChange={(city) => setProfile((e) => ({ ...e, address: { ...e.address, city } }))}
+          />
+          <EditableTextInput
+            label="Estado"
+            value={profile.address.state || ``}
+            onOk={handleUpdateProfile}
+            onCancel={() => setProfile((e) => ({ ...e, address: { ...e.address, state: user.address.state || `` } }))}
+            onInputChange={(state) => setProfile((e) => ({ ...e, address: { ...e.address, state } }))}
+          />
+          <EditableTextInput
+            label="Bairro"
+            value={profile.address.neighborhood || ``}
+            onOk={handleUpdateProfile}
+            onCancel={() => setProfile((e) => ({ ...e, address: { ...e.address, neighborhood: user.address.neighborhood || `` } }))}
+            onInputChange={(neighborhood) => setProfile((e) => ({ ...e, address: { ...e.address, neighborhood } }))}
+          />
+          <EditableTextInput
+            label="Rua"
+            value={profile.address.address || ``}
+            onOk={handleUpdateProfile}
+            onCancel={() => setProfile((e) => ({ ...e, address: { ...e.address, address: user.address.address || `` } }))}
+            onInputChange={(address) => setProfile((e) => ({ ...e, address: { ...e.address, address } }))}
+          />
+          <EditableTextInput
+            label="Nº"
+            value={profile.address.number || ``}
+            onOk={handleUpdateProfile}
+            onCancel={() => setProfile((e) => ({ ...e, address: { ...e.address, number: user.address.number || `` } }))}
+            onInputChange={(number) => setProfile((e) => ({ ...e, address: { ...e.address, number } }))}
+          />
+          <EditableTextInput
+            label="Complemento"
+            value={profile.address.complement || ``}
+            onOk={handleUpdateProfile}
+            onCancel={() => setProfile((e) => ({ ...e, address: { ...e.address, complement: user.address.complement || `` } }))}
+            onInputChange={(complement) => setProfile((e) => ({ ...e, address: { ...e.address, complement } }))}
+          />
         </Flex>
       </Flex>
     </Flex>
@@ -97,7 +206,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
     const user = await validateSession();
 
-    return { props: { selectedPage, pageTitle: 'Rango - Perfil', showBackButton: false } };
+    return { props: { selectedPage, pageTitle: 'Rango - Perfil', user, showBackButton: false } };
   } catch (err: any) {
     cookieManager.forceTokenExpires(res);
     logError(selectedPage, err);

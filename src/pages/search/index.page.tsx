@@ -7,17 +7,26 @@ import { IStore } from '@/_base/interfaces/store';
 import { StoreListItem } from '@/components/StoreListItem';
 import { TextInput } from '@/components/Inputs/Text';
 import { FaSearch } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAsyncDebounce } from '@/_base/hooks';
+import { listStores } from '@/_base/services/store';
+import { validateSession } from '@/_base/services/auth';
 
 interface IProps {
   user: IUser;
-  stores: IStore[]
 }
 
-const Search: React.FC<IProps> = ({ stores }) => {
+const Search: React.FC<IProps> = () => {
   const [targetText, setTargetText] = useState(``);
+  const [stores, setStores] = useState<IStore[]>([]);
   const [targetStores, setTargetStores] = useState<IStore[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const _stores = await listStores();
+      setStores(_stores);
+    })();
+  }, []);
 
   useAsyncDebounce(
     () => {
@@ -37,13 +46,23 @@ const Search: React.FC<IProps> = ({ stores }) => {
   );
 
   return (
-    <Flex direction="column" flex="1" gap="24px" overflow="auto" color="text" p="1rem">
+    <Flex
+      direction="column"
+      flex="1"
+      gap="24px"
+      overflow="auto"
+      color="text"
+      p="1rem"
+      w="100%"
+      maxW={{ base: undefined, md: `70rem` }}
+      margin={{ base: undefined, md: '0 auto' }}
+    >
       <TextInput
         value={targetText}
         onInputChange={(e) => setTargetText(e)}
         leftElement={<FaSearch color="#21E080" />}
         placeholder="Pesquisar restaurantes e pratos"
-        bg="white"
+        bg="surface"
       />
       <Flex direction="column" gap="1.25rem" pb="1remd">
         {targetStores.map((store) => (
@@ -62,9 +81,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   try {
     cookieManager.updateToken(req);
 
-    // const user = await validateSession();
+    const user = await validateSession();
 
-    return { props: { selectedPage, pageTitle: 'Rango - buscar', showBackButton: false, stores: [], showLastViewed: true } };
+    return { props: { selectedPage, pageTitle: 'Rango - buscar', showBackButton: false, user, showLastViewed: true } };
   } catch (err: any) {
     cookieManager.forceTokenExpires(res);
     logError(selectedPage, err);

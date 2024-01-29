@@ -2,8 +2,9 @@ import { ModalOverlayProps, ModalProps } from '@chakra-ui/react';
 
 export interface IModalProps extends Partial<ModalProps> {
   show: boolean;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   onCancel?: () => void;
+  onClose?: () => void;
   title?: string;
   okText?: string;
   cancelText?: string;

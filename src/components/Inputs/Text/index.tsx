@@ -5,7 +5,7 @@ export const TextInput: React.FC<IInputProps> = ({ onInputChange, value = '', pl
   return (
     <Flex direction="column" color="gray600" w="100%">
       {!!label && (
-        <Text color={rest.color || "gray700"} fontSize="13.5px" fontWeight="500" pb="0.25rem" >
+        <Text color={rest.color || 'gray700'} fontSize="13.5px" fontWeight="500" pb="0.25rem">
           {label}
         </Text>
       )}

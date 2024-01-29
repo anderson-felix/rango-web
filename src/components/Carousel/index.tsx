@@ -15,7 +15,7 @@ const defaultConfig: Record<CarouselDeviceType, CarouselConfigType> = {
   },
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 5,
+    items: 8,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },

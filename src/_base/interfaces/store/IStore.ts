@@ -11,4 +11,5 @@ export interface IStore {
   updated_at: Date;
   menu: IStoreMenuItem[];
   rating_average: string;
+  users_liked: string[];
 }

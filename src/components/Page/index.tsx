@@ -8,6 +8,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import { LastViewed } from './components/LastViewed';
 import { UserInfo } from './components/UserInfo';
+import { SideMenu } from './components/SideMenu';
 
 const NAKED_PAGES = ['login', 'signup', 'recover_password'];
 
@@ -43,16 +44,20 @@ export const PageWrapper: React.FC<PropsWithChildren<IPageProps>> = ({
         <>
           <Header user={user} headerLabel={headerLabel} />
           {showLastViewed && <LastViewed />}
-          {showUserInfo && <UserInfo />}
-          <Flex flex="1" gap="32px" overflow="hidden">
-            <Flex flex="1" height="100%" w="100%" overflow="hidden" direction="column" padding={{ base: '1rem', md: undefined }}>
-              {showBackButton && (
-                <Flex cursor="pointer" fontWeight="600" color="primary700" onClick={() => router.back()} pb="0.5rem" w="fit-content">
-                  <FiChevronLeft fontSize="20px" style={{ marginTop: '2px' }} />
-                  <Text textAlign="left">Voltar</Text>
-                </Flex>
-              )}
-              {children}
+          {showUserInfo && <UserInfo user={user} />}
+          <Flex flex="1" overflow="hidden">
+            <SideMenu user={user} page={selectedPage} />
+
+            <Flex flex="1" gap="32px" overflow="hidden">
+              <Flex flex="1" height="100%" w="100%" overflow="hidden" direction="column">
+                {showBackButton && (
+                  <Flex cursor="pointer" fontWeight="600" color="primary700" onClick={() => router.back()} pb="0.5rem" w="fit-content">
+                    <FiChevronLeft fontSize="20px" style={{ marginTop: '2px' }} />
+                    <Text textAlign="left">Voltar</Text>
+                  </Flex>
+                )}
+                {children}
+              </Flex>
             </Flex>
           </Flex>
           <FooterMenu page={selectedPage} user={user} />
