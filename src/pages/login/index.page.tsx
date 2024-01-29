@@ -59,7 +59,7 @@ const Login: React.FC = () => {
   return pageIsLoading ? (
     <Flex position="fixed"></Flex>
   ) : (
-    <Flex h="100%" width="100%" justifyContent="center" alignItems="center" boxShadow="md">
+    <Flex h="100%" width="calc(100% - 2rem)" justifyContent="center" alignItems="center" boxShadow="md" mx="1rem">
       <Flex
         w="400px"
         direction="column"
