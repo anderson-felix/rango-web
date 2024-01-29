@@ -5,11 +5,13 @@ import { logError, cookieManager } from '@/_base/utils';
 import { Flex, Text, useColorMode } from '@chakra-ui/react';
 import { IUser } from '@/_base/interfaces/user';
 import { EditableTextInput } from '@/components/Inputs/EditableText';
-import { useAsyncCallback, useAsyncDebounce, useAuth, useCustomToast } from '@/_base/hooks';
+import { useAsyncCallback, useAsyncDebounce, useAuth, useCustomRouter, useCustomToast } from '@/_base/hooks';
 import { updateProfile } from '@/_base/services/user';
 import { AppLogo } from '@/components/Logo';
 import { validateSession } from '@/_base/services/auth';
 import axios from 'axios';
+import { GenericButton } from '@/components/Buttons/Generic';
+import { IoMdLogOut } from 'react-icons/io';
 
 interface ViaCepResponse {
   cep: string;
@@ -34,6 +36,7 @@ const Profile: React.FC<IProps> = ({ user }) => {
   const { setUser, user: authUser } = useAuth();
   const { setColorMode } = useColorMode();
   const toast = useCustomToast();
+  const router = useCustomRouter();
 
   const handleUpdateProfile = useAsyncCallback(async () => {
     const updatedProfile = await updateProfile({
@@ -192,6 +195,15 @@ const Profile: React.FC<IProps> = ({ user }) => {
           />
         </Flex>
       </Flex>
+      <GenericButton
+        label="Sair"
+        btntype="outline-warning"
+        size="sm"
+        w="fit-content"
+        margin="auto"
+        rightIcon={<IoMdLogOut fontSize="18px" />}
+        onClick={() => router.push(`/logout`)}
+      />
     </Flex>
   );
 };
