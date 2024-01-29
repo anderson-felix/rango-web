@@ -196,6 +196,7 @@ const Profile: React.FC<IProps> = ({ user }) => {
         </Flex>
       </Flex>
       <GenericButton
+        display={{ base: 'flex', md: `none` }}
         label="Sair"
         btntype="outline-warning"
         size="sm"
