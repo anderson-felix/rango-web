@@ -68,6 +68,7 @@ const Orders: React.FC<IProps> = ({ orders: _orders }) => {
       address: formatAddress(user.address),
       items: cart.items.map((item) => ({ name: item.name, quantity: item.quantity, unit_price: item.unit_price })),
     });
+    order.status ||= `pending`;
 
     setTimeout(() => {
       toast({ status: `success`, description: `Pedido enviado para a loja!`, position: `top` });
