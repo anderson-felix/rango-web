@@ -59,7 +59,7 @@ const Login: React.FC = () => {
   return (
     <>
       <Fade in={!pageIsLoading} style={{ margin: `auto`, width: 'calc(100% - 2rem)' }} transition={{ enter: { duration: 1.35 } }}>
-        <Flex h="100%" justifyContent="center" alignItems="center" boxShadow="md">
+        <Flex h="100%" justifyContent="center" alignItems="center">
           <Flex
             w="400px"
             direction="column"
